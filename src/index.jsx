@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Game } from './components/game/game';
+import { DataContainer } from './containers/data-container';
 
 
-const App = () => (<Game />);
+const App = () => (<DataContainer />);
 
 ReactDOM.render(<App />, document.getElementById('react-root'));

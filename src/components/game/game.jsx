@@ -4,16 +4,20 @@ import { getRandomSquareIndex, buildGameDataLayer } from './helpers';
 import './index.scss';
 
 export class Game extends Component {
-  state = {
-    gameVisualLayer: [],
-    gameDataLayer: [],
-    selectedSquareIds: [],
-    gameStatusMessage: '',
-    userPoints: 0,
-    computerPoints: 0,
-    isPlay: true,
-    currentSquareId: null,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      gameVisualLayer: [],
+      gameDataLayer: [],
+      selectedSquareIds: [],
+      gameStatusMessage: '',
+      userPoints: 0,
+      computerPoints: 0,
+      isPlay: false,
+      currentSquareId: null,
+      gameMode: null,
+    };
+  }
 
   onHandleSquareClick(square) {
     const currentGameDataLayer = this.state.gameDataLayer;
@@ -31,7 +35,7 @@ export class Game extends Component {
     }
   }
 
-  buildVisualGameLayer(gameDataLayer) {
+  buildVisualGameLayer = (gameDataLayer) => {
     return gameDataLayer.map((line, lineIndex) => {
       const currentLine = line.map((square, squareIndex) => {
         return (
@@ -52,7 +56,7 @@ export class Game extends Component {
         resolve(this.checkStatusSquare(this.state.currentSquareId));
       }, mode.delay);
     })
-      .then(() => this.checkStatusGame())
+      .then(() => this.checkStatusGame(mode.field))
       .then(() => {
         if (!this.state.isPlay) {
           return;
@@ -117,34 +121,33 @@ export class Game extends Component {
     });
   }
 
-  checkStatusGame() {
+  checkStatusGame(field) {
     const { userPoints, computerPoints } = this.state;
     let { isPlay, gameStatusMessage } = this.state;
 
-    if (userPoints === 2 || computerPoints === 2) {
+    const maxCountPoints = Math.floor((field * field) / 2);
+
+    if (userPoints === maxCountPoints || computerPoints === maxCountPoints) {
       clearInterval(this.setInterval);
-      gameStatusMessage = (userPoints === 2) ? 'YOU WIN' : 'COMPUTER WIN';
+      gameStatusMessage = (userPoints === maxCountPoints) ? 'YOU WIN' : 'COMPUTER WIN';
       isPlay = false;
     }
 
     return this.setState({ gameStatusMessage, isPlay });
   }
 
-  componentDidMount() {
-    const mode = {
-      field: 5,
-      delay: 2000,
-    };
-
-    const gameDataLayer = buildGameDataLayer(mode);
-    const gameVisualLayer = this.buildVisualGameLayer(gameDataLayer);
-
-    this.setState({ gameVisualLayer, gameDataLayer });
-    this.setInterval = setInterval(() => this.startGame(mode), mode.delay);
-  }
-
   componentWillUnmount() {
     clearInterval(this.setInterval);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const mode = nextProps.gameMode;
+    const gameDataLayer = buildGameDataLayer(mode);
+
+    const gameVisualLayer = this.buildVisualGameLayer(gameDataLayer);
+
+    this.setState({ gameVisualLayer, gameDataLayer, isPlay: nextProps.isPlay });
+    this.setInterval = setInterval(() => this.startGame(mode), mode.delay);
   }
 
   render() {
