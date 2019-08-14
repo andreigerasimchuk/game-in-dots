@@ -1,0 +1,25 @@
+.square {
+    border: 1px solid black;
+    min-width: 40px;
+    min-height: 40px;
+}
+
+.square-color-white {
+    background-color: white;
+}
+
+.square-color-blue {
+    background-color: blue;
+}
+
+.square-color-green {
+    background-color: green;
+}
+
+.square-color-red {
+    background-color: red;
+}
+
+.square-line {
+    display: flex;
+}
