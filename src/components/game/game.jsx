@@ -19,6 +19,7 @@ export default class Game extends Component {
       userPoints: 0,
       computerPoints: 0,
       currentSquareId: null,
+      userName: '',
     };
   }
 
@@ -115,14 +116,14 @@ export default class Game extends Component {
   }
 
   checkStatusGame(field) {
-    const { userPoints, computerPoints } = this.state;
+    const { userPoints, computerPoints, userName } = this.state;
     let { isPlay, gameStatusMessage, relaunch } = this.state;
 
     const maxCountPoints = Math.floor((field * field) / 2);
 
     if (userPoints === maxCountPoints || computerPoints === maxCountPoints) {
       clearInterval(this.setInterval);
-      gameStatusMessage = (userPoints === maxCountPoints) ? 'YOU WIN' : 'COMPUTER WIN';
+      gameStatusMessage = (userPoints === maxCountPoints) ? `YOU WIN ${userName}` : 'COMPUTER WIN';
       isPlay = false;
       relaunch = true;
     }
@@ -185,6 +186,7 @@ export default class Game extends Component {
       currentNameGameMode,
       gameStatusMessage,
       gameVisualLayer,
+      userName,
     } = this.state;
 
     const handleChangeMode = (event) => {
@@ -198,11 +200,21 @@ export default class Game extends Component {
       });
     };
 
+    const handleChangeInput = (event) => {
+      this.setState({ userName: event.target.value });
+    };
+
     const handleClickPlay = () => {
-      if (isPlay) {
+      if (isPlay && !relaunch) {
         return;
       }
 
+      if (!userName) {
+        alert('Input your name!');
+        return;
+      }
+
+      this.buildGame(currentGameMode);
       this.setInterval = setInterval(() => this.startGame(currentGameMode), currentGameMode.delay);
       this.setState({ isPlay: true });
     };
@@ -217,6 +229,8 @@ export default class Game extends Component {
           currentNameGameMode={currentNameGameMode}
           handleChangeMode={handleChangeMode}
           handleClickPlay={handleClickPlay}
+          userName={userName}
+          handleChangeInput={handleChangeInput}
         />
         <div className="game-message">
           {gameStatusMessage}

@@ -3,7 +3,13 @@ import React from 'react';
 
 
 const GameMenu = ({
-  currentNameGameMode, gameModes, handleChangeMode, handleClickPlay, relaunch,
+  currentNameGameMode,
+  gameModes,
+  handleChangeMode,
+  handleClickPlay,
+  relaunch,
+  handleChangeInput,
+  userName,
 }) => {
   const modeOptions = Object.keys(gameModes || {})
     .map((key) => (
@@ -24,7 +30,12 @@ const GameMenu = ({
       >
         {modeOptions}
       </select>
-      <input className="game-title-input" placeholder="Input your name" />
+      <input
+        value={userName}
+        className="game-title-input"
+        placeholder="Input your name"
+        onChange={handleChangeInput}
+      />
       <button
         type="button"
         onClick={handleClickPlay}
