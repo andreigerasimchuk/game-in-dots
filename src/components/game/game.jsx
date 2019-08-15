@@ -121,13 +121,13 @@ export default class Game extends Component {
 
     const maxCountPoints = Math.floor((field * field) / 2);
 
-    if (userPoints === 1 || computerPoints === 1) {
+    if (userPoints === maxCountPoints || computerPoints === maxCountPoints) {
       clearInterval(this.setInterval);
       gameStatusMessage = (userPoints === maxCountPoints) ? `YOU WIN ${userName}` : 'COMPUTER WIN';
       isPlay = false;
       relaunch = true;
 
-      if (userPoints === 1) {
+      if (userPoints === maxCountPoints) {
         const { userWin } = this.props;
         userWin(userName);
       }
