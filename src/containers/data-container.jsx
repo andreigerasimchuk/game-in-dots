@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Winners from '../components/winners';
 import Game from '../components/game/game';
-import { getWinners, getGameModes } from '../services/api';
+import { getWinners, getGameModes, sendWinner } from '../services/api';
 import '../index.scss';
 
 export default class DataContainer extends Component {
@@ -31,11 +31,21 @@ export default class DataContainer extends Component {
       winners,
     } = this.state;
 
+    const userWin = (name) => {
+      sendWinner(name)
+        .then((result) => {
+          if (!result.error) {
+            this.setState({ winners: result });
+          }
+        });
+    };
+
     return (
-      <div className="container">
+      <div className="container" >
         <div className="game-box">
           <Game
             gameModes={gameModes}
+            userWin={userWin}
           />
         </div>
         <div className="winners-box">
