@@ -23,13 +23,14 @@ const GameMenu = ({
 
   return (
     <div className="game-title-box">
-      <select
+      {currentNameGameMode && (<select
         value={currentNameGameMode}
         onChange={handleChangeMode}
         className="game-title-select"
       >
         {modeOptions}
-      </select>
+      </select>)}
+
       <input
         value={userName}
         className="game-title-input"
