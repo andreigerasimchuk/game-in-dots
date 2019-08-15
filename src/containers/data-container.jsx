@@ -41,7 +41,7 @@ export default class DataContainer extends Component {
     };
 
     return (
-      <div className="container" >
+      <div className="container">
         <div className="game-box">
           <Game
             gameModes={gameModes}
