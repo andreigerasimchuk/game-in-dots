@@ -1,0 +1,27 @@
+{
+    "parser": "babel-eslint",
+    "env": {
+      "node": true,
+      "es6": true,
+      "jest": true
+    },
+    "globals": {
+      "document": true,
+      "localStorage": true,
+      "window": true,
+      "fetch": true,
+    },
+    "extends": [
+      "eslint:recommended",
+      "airbnb",
+    ],
+    "rules": {
+    },
+    "plugins": [
+      "react",
+      "jsx-a11y",
+      "babel",
+      "import"
+    ]
+  }
+  
