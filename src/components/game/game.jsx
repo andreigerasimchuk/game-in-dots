@@ -3,7 +3,7 @@ import { SQUARE_STATUSES } from './constants';
 import { getRandomSquareIndex, buildGameDataLayer } from './helpers';
 import './index.scss';
 
-export class Game extends Component {
+export default class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,6 +17,20 @@ export class Game extends Component {
       currentSquareId: null,
       gameMode: null,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const mode = nextProps.gameMode;
+    const gameDataLayer = buildGameDataLayer(mode);
+
+    const gameVisualLayer = this.buildVisualGameLayer(gameDataLayer);
+
+    this.setState({ gameVisualLayer, gameDataLayer, isPlay: nextProps.isPlay });
+    this.setInterval = setInterval(() => this.startGame(mode), mode.delay);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.setInterval);
   }
 
   onHandleSquareClick(square) {
@@ -35,23 +49,21 @@ export class Game extends Component {
     }
   }
 
-  buildVisualGameLayer = (gameDataLayer) => {
-    return gameDataLayer.map((line, lineIndex) => {
-      const currentLine = line.map((square, squareIndex) => {
-        return (
-          <div
-            className={`square square-color-${square.color}`} key={squareIndex}
-            onClick={() => this.onHandleSquareClick(square)}
-          ></div >
-        );
-      });
 
-      return <div key={lineIndex} className='square-line'>{currentLine}</div>;
-    });
-  }
+  buildVisualGameLayer = (gameDataLayer) => gameDataLayer.map((line, lineIndex) => {
+    const currentLine = line.map((square, squareIndex) => (
+      <div
+        className={`square square-color-${square.color}`}
+        key={squareIndex}
+        onClick={() => this.onHandleSquareClick(square)}
+      />
+    ));
+
+    return <div key={lineIndex} className="square-line">{currentLine}</div>;
+  })
 
   startGame(mode) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve(this.checkStatusSquare(this.state.currentSquareId));
       }, mode.delay);
@@ -69,19 +81,17 @@ export class Game extends Component {
           this.state.selectedSquareId,
         );
 
-        const gameDataLayer = this.state.gameDataLayer.map(line => {
-          return line.map(square => {
-            if (square.id === currentSquareIndex) {
-              square.color = SQUARE_STATUSES.waiting;
-            }
+        const gameDataLayer = this.state.gameDataLayer.map((line) => line.map((square) => {
+          if (square.id === currentSquareIndex) {
+            square.color = SQUARE_STATUSES.waiting;
+          }
 
-            return square;
-          });
-        });
+          return square;
+        }));
 
         const gameVisualLayer = this.buildVisualGameLayer(gameDataLayer);
 
-        return this.setState({
+        this.setState({
           gameVisualLayer,
           gameDataLayer,
           selectedSquareIds: [...this.state.selectedSquareIds, currentSquareIndex],
@@ -98,22 +108,20 @@ export class Game extends Component {
       return;
     }
 
-    const currentGameDataLayer = gameDataLayer.map(line => {
-      return line.map(square => {
-        if (square.id === squareId && square.color === SQUARE_STATUSES.waiting) {
-          square.color = SQUARE_STATUSES.computerSelected;
-          computerPoints++;
-        } else if (square.id === squareId && square.color === SQUARE_STATUSES.userSelected) {
-          userPoints++;
-        }
+    const currentGameDataLayer = gameDataLayer.map((line) => line.map((square) => {
+      if (square.id === squareId && square.color === SQUARE_STATUSES.waiting) {
+        square.color = SQUARE_STATUSES.computerSelected;
+        computerPoints += 1;
+      } else if (square.id === squareId && square.color === SQUARE_STATUSES.userSelected) {
+        userPoints += 1;
+      }
 
-        return square;
-      });
-    });
+      return square;
+    }));
 
     const gameVisualLayer = this.buildVisualGameLayer(currentGameDataLayer);
 
-    return this.setState({
+    this.setState({
       gameVisualLayer,
       gameDataLayer: currentGameDataLayer,
       userPoints,
@@ -134,20 +142,6 @@ export class Game extends Component {
     }
 
     return this.setState({ gameStatusMessage, isPlay });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.setInterval);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const mode = nextProps.gameMode;
-    const gameDataLayer = buildGameDataLayer(mode);
-
-    const gameVisualLayer = this.buildVisualGameLayer(gameDataLayer);
-
-    this.setState({ gameVisualLayer, gameDataLayer, isPlay: nextProps.isPlay });
-    this.setInterval = setInterval(() => this.startGame(mode), mode.delay);
   }
 
   render() {

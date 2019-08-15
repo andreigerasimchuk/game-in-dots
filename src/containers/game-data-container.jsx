@@ -13,10 +13,11 @@ export default class GamaDataContainer extends Component {
   }
 
   render() {
+    const { isPlay, relaunch } = this.state;
     return (
       <Menu
-        isPlay={this.state.isPlay}
-        relaunch={this.state.relaunch}
+        isPlay={isPlay}
+        relaunch={relaunch}
       />
     );
   }

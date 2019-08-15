@@ -9,7 +9,7 @@ export const getRandomSquareIndex = (min, max, exclusions = []) => {
   const currentRandomValue = Math.floor(randomValue);
 
   return exclusions.includes(currentRandomValue)
-    ? randomInteger(min, max, exclusions)
+    ? getRandomSquareIndex(min, max, exclusions)
     : currentRandomValue;
 };
 
@@ -17,10 +17,10 @@ export const buildGameDataLayer = (mode) => {
   const lines = [];
   let id = 1;
 
-  for (let line = 0; line < mode.field; line++) {
+  for (let line = 0; line < mode.field; line += 1) {
     const columns = [];
 
-    for (let column = 0; column < mode.field; column++) {
+    for (let column = 0; column < mode.field; column += 1) {
       columns.push({
         id,
         line,
@@ -28,7 +28,7 @@ export const buildGameDataLayer = (mode) => {
         color: SQUARE_STATUSES.empty,
       });
 
-      id++;
+      id += 1;
     }
 
     lines.push(columns);
