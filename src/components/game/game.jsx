@@ -65,12 +65,20 @@ export default class Game extends Component {
   startGame(mode) {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(this.checkStatusSquare(this.state.currentSquareId));
+        const { currentSquareId } = this.state;
+        resolve(this.checkStatusSquare(currentSquareId));
       }, mode.delay);
     })
       .then(() => this.checkStatusGame(mode.field))
       .then(() => {
-        if (!this.state.isPlay) {
+        const {
+          isPlay,
+          selectedSquareId,
+          gameDataLayer,
+          selectedSquareIds,
+        } = this.state;
+
+        if (!isPlay) {
           return;
         }
 
@@ -78,23 +86,24 @@ export default class Game extends Component {
         const currentSquareIndex = getRandomSquareIndex(
           1,
           fieldSize,
-          this.state.selectedSquareId,
+          selectedSquareId,
         );
 
-        const gameDataLayer = this.state.gameDataLayer.map((line) => line.map((square) => {
+        const currentGameDataLayer = gameDataLayer.map((line) => line.map((square) => {
+          const currentSquare = { ...square };
           if (square.id === currentSquareIndex) {
-            square.color = SQUARE_STATUSES.waiting;
+            currentSquare.color = SQUARE_STATUSES.waiting;
           }
 
-          return square;
+          return currentSquare;
         }));
 
-        const gameVisualLayer = this.buildVisualGameLayer(gameDataLayer);
+        const gameVisualLayer = this.buildVisualGameLayer(currentGameDataLayer);
 
         this.setState({
           gameVisualLayer,
-          gameDataLayer,
-          selectedSquareIds: [...this.state.selectedSquareIds, currentSquareIndex],
+          gameDataLayer: currentGameDataLayer,
+          selectedSquareIds: [...selectedSquareIds, currentSquareIndex],
           currentSquareId: currentSquareIndex,
         });
       });
@@ -109,14 +118,16 @@ export default class Game extends Component {
     }
 
     const currentGameDataLayer = gameDataLayer.map((line) => line.map((square) => {
+      const currentSquare = { ...square };
+
       if (square.id === squareId && square.color === SQUARE_STATUSES.waiting) {
-        square.color = SQUARE_STATUSES.computerSelected;
+        currentSquare.color = SQUARE_STATUSES.computerSelected;
         computerPoints += 1;
       } else if (square.id === squareId && square.color === SQUARE_STATUSES.userSelected) {
         userPoints += 1;
       }
 
-      return square;
+      return currentSquare;
     }));
 
     const gameVisualLayer = this.buildVisualGameLayer(currentGameDataLayer);
@@ -145,13 +156,14 @@ export default class Game extends Component {
   }
 
   render() {
+    const { gameStatusMessage, gameVisualLayer } = this.state;
     return (
       <div>
         <div>
-          {this.state.gameStatusMessage}
+          {gameStatusMessage}
         </div>
         <div>
-          {this.state.gameVisualLayer}
+          {gameVisualLayer}
         </div>
       </div>
     );
