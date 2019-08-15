@@ -16,12 +16,22 @@ const GameMenu = ({
     ));
 
   return (
-    <div>
-      <select value={currentNameGameMode} onChange={handleChangeMode}>
+    <div className="game-title-box">
+      <select
+        value={currentNameGameMode}
+        onChange={handleChangeMode}
+        className="game-title-select"
+      >
         {modeOptions}
       </select>
-      <input />
-      <button type="button" onClick={handleClickPlay}>{relaunch ? 'replay' : 'PLAY'}</button>
+      <input className="game-title-input" placeholder="Input your name" />
+      <button
+        type="button"
+        onClick={handleClickPlay}
+        className="game-title-button"
+      >
+        {relaunch ? 'replay' : 'PLAY'}
+      </button>
     </div>
   );
 };

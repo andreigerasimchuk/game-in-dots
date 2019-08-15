@@ -116,7 +116,7 @@ export default class Game extends Component {
 
   checkStatusGame(field) {
     const { userPoints, computerPoints } = this.state;
-    let { isPlay, gameStatusMessage } = this.state;
+    let { isPlay, gameStatusMessage, relaunch } = this.state;
 
     const maxCountPoints = Math.floor((field * field) / 2);
 
@@ -124,9 +124,10 @@ export default class Game extends Component {
       clearInterval(this.setInterval);
       gameStatusMessage = (userPoints === maxCountPoints) ? 'YOU WIN' : 'COMPUTER WIN';
       isPlay = false;
+      relaunch = true;
     }
 
-    return this.setState({ gameStatusMessage, isPlay });
+    return this.setState({ gameStatusMessage, isPlay, relaunch });
   }
 
   startGame(mode) {
@@ -217,13 +218,12 @@ export default class Game extends Component {
           handleChangeMode={handleChangeMode}
           handleClickPlay={handleClickPlay}
         />
-        <div>
+        <div className="game-message">
           {gameStatusMessage}
         </div>
-        <div>
+        <div className="game-field">
           {gameVisualLayer}
         </div>
-        <div>test</div>
       </div>
     );
   }

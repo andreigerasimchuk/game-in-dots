@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Winners from '../components/winners';
 import Game from '../components/game/game';
 import { getWinners, getGameModes } from '../api/api';
+import '../index.scss';
 
 export default class DataContainer extends Component {
   constructor(props) {
@@ -31,13 +32,13 @@ export default class DataContainer extends Component {
     } = this.state;
 
     return (
-      <div>
-        <div>
+      <div className="container">
+        <div className="game-box">
           <Game
             gameModes={gameModes}
           />
         </div>
-        <div>
+        <div className="winners-box">
           <Winners winners={winners} />
         </div>
       </div>

@@ -1,5 +1,5 @@
 .square {
-    border: 1px solid black;
+    border: 1px solid #ebebee;
     min-width: 40px;
     min-height: 40px;
 }
@@ -9,17 +9,24 @@
 }
 
 .square-color-blue {
-    background-color: blue;
+    background-color: #42d8e8;
 }
 
 .square-color-green {
-    background-color: green;
+    background-color: #00e871;
 }
 
 .square-color-red {
-    background-color: red;
+    background-color: #e85a5f;
 }
 
 .square-line {
     display: flex;
+}
+
+.game-message {
+    display: flex;
+    justify-content: center;
+    min-height: 30px;
+    font-size: 20px;
 }
