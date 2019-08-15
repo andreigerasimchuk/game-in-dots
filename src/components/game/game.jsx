@@ -4,7 +4,7 @@ import { buildGameDataLayer, getRandomSquareIndex } from './helpers';
 import { SQUARE_STATUSES } from './constants';
 import './index.scss';
 
-export default class GameDataContainer extends Component {
+export default class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
