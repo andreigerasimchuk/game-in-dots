@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 
 
 const GameMenu = ({
-  currentNameGameMode, gameModes, handleChangeMode, handleClickPlay,
+  currentNameGameMode, gameModes, handleChangeMode, handleClickPlay, relaunch,
 }) => {
-  const modeOptions = Object.keys(gameModes)
+  const modeOptions = Object.keys(gameModes || {})
     .map((key) => (
       <option
         value={key}
@@ -20,7 +21,7 @@ const GameMenu = ({
         {modeOptions}
       </select>
       <input />
-      <button onClick={handleClickPlay}>PLAY</button>
+      <button type="button" onClick={handleClickPlay}>{relaunch ? 'replay' : 'PLAY'}</button>
     </div>
   );
 };

@@ -1,10 +1,6 @@
 import { SQUARE_STATUSES } from './constants';
 
 export const getRandomSquareIndex = (min, max, exclusions = []) => {
-  if (exclusions.length === max) {
-    return null;
-  }
-
   const randomValue = min + Math.random() * (max + 1 - min);
   const currentRandomValue = Math.floor(randomValue);
 

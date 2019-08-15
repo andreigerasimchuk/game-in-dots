@@ -1,32 +1,39 @@
 import React, { Component } from 'react';
+import Menu from './menu';
+import { buildGameDataLayer, getRandomSquareIndex } from './helpers';
 import { SQUARE_STATUSES } from './constants';
-import { getRandomSquareIndex, buildGameDataLayer } from './helpers';
 import './index.scss';
 
-export default class Game extends Component {
+export default class GameDataContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gameVisualLayer: [],
-      gameDataLayer: [],
-      selectedSquareIds: [],
+      isPlay: false,
+      gameVisualLayer: null,
+      gameDataLayer: null,
+      currentNameGameMode: null,
+      currentGameMode: null,
+      relaunch: false,
       gameStatusMessage: '',
+      selectedSquareIds: [],
       userPoints: 0,
       computerPoints: 0,
-      isPlay: false,
       currentSquareId: null,
-      gameMode: null,
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    const mode = nextProps.gameMode;
-    const gameDataLayer = buildGameDataLayer(mode);
+    const { gameModes } = nextProps;
+    const [currentNameGameMode] = Object.keys(gameModes);
+    const currentGameMode = gameModes[currentNameGameMode];
 
-    const gameVisualLayer = this.buildVisualGameLayer(gameDataLayer);
+    this.buildGame(currentGameMode);
 
-    this.setState({ gameVisualLayer, gameDataLayer, isPlay: nextProps.isPlay });
-    this.setInterval = setInterval(() => this.startGame(mode), mode.delay);
+    this.setState({
+      currentNameGameMode,
+      currentGameMode,
+      gameModes,
+    });
   }
 
   componentWillUnmount() {
@@ -34,18 +41,15 @@ export default class Game extends Component {
   }
 
   onHandleSquareClick(square) {
-    const currentGameDataLayer = this.state.gameDataLayer;
-    const currentColor = currentGameDataLayer[square.line][square.column].color;
+    const { gameDataLayer } = this.state;
+    const currentColor = gameDataLayer[square.line][square.column].color;
 
     if (currentColor === SQUARE_STATUSES.waiting) {
-      currentGameDataLayer[square.line][square.column].color = SQUARE_STATUSES.userSelected;
+      gameDataLayer[square.line][square.column].color = SQUARE_STATUSES.userSelected;
 
-      const gameVisualLayer = this.buildVisualGameLayer(currentGameDataLayer);
+      const gameVisualLayer = this.buildVisualGameLayer(gameDataLayer);
 
-      this.setState({
-        gameVisualLayer,
-        selectedSquareIds: [...this.state.selectedSquareIds, square.id],
-      });
+      this.setState({ gameVisualLayer, gameDataLayer });
     }
   }
 
@@ -62,51 +66,21 @@ export default class Game extends Component {
     return <div key={lineIndex} className="square-line">{currentLine}</div>;
   })
 
-  startGame(mode) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const { currentSquareId } = this.state;
-        resolve(this.checkStatusSquare(currentSquareId));
-      }, mode.delay);
-    })
-      .then(() => this.checkStatusGame(mode.field))
-      .then(() => {
-        const {
-          isPlay,
-          selectedSquareId,
-          gameDataLayer,
-          selectedSquareIds,
-        } = this.state;
+  buildGame(gameMode) {
+    const gameDataLayer = buildGameDataLayer(gameMode);
+    const gameVisualLayer = this.buildVisualGameLayer(gameDataLayer);
 
-        if (!isPlay) {
-          return;
-        }
+    clearInterval(this.setInterval);
 
-        const fieldSize = mode.field * mode.field;
-        const currentSquareIndex = getRandomSquareIndex(
-          1,
-          fieldSize,
-          selectedSquareId,
-        );
-
-        const currentGameDataLayer = gameDataLayer.map((line) => line.map((square) => {
-          const currentSquare = { ...square };
-          if (square.id === currentSquareIndex) {
-            currentSquare.color = SQUARE_STATUSES.waiting;
-          }
-
-          return currentSquare;
-        }));
-
-        const gameVisualLayer = this.buildVisualGameLayer(currentGameDataLayer);
-
-        this.setState({
-          gameVisualLayer,
-          gameDataLayer: currentGameDataLayer,
-          selectedSquareIds: [...selectedSquareIds, currentSquareIndex],
-          currentSquareId: currentSquareIndex,
-        });
-      });
+    this.setState({
+      gameVisualLayer,
+      gameDataLayer,
+      userPoints: 0,
+      computerPoints: 0,
+      selectedSquareIds: [],
+      currentSquareId: null,
+      isPlay: false,
+    });
   }
 
   checkStatusSquare(squareId) {
@@ -155,16 +129,101 @@ export default class Game extends Component {
     return this.setState({ gameStatusMessage, isPlay });
   }
 
+  startGame(mode) {
+    new Promise((resolve) => {
+      setTimeout(() => {
+        const { currentSquareId } = this.state;
+        resolve(this.checkStatusSquare(currentSquareId));
+      }, mode.delay);
+    })
+      .then(() => this.checkStatusGame(mode.field))
+      .then(() => {
+        const {
+          isPlay,
+          gameDataLayer,
+          selectedSquareIds,
+        } = this.state;
+
+        if (!isPlay) {
+          return;
+        }
+
+        const fieldSize = mode.field * mode.field;
+        const currentSquareIndex = getRandomSquareIndex(
+          1,
+          fieldSize,
+          selectedSquareIds,
+        );
+
+        const currentGameDataLayer = gameDataLayer.map((line) => line.map((square) => {
+          const currentSquare = { ...square };
+          if (square.id === currentSquareIndex) {
+            currentSquare.color = SQUARE_STATUSES.waiting;
+          }
+
+          return currentSquare;
+        }));
+
+        const gameVisualLayer = this.buildVisualGameLayer(currentGameDataLayer);
+
+        this.setState({
+          gameVisualLayer,
+          gameDataLayer: currentGameDataLayer,
+          selectedSquareIds: [...selectedSquareIds, currentSquareIndex],
+          currentSquareId: currentSquareIndex,
+        });
+      });
+  }
+
   render() {
-    const { gameStatusMessage, gameVisualLayer } = this.state;
+    const {
+      isPlay,
+      relaunch,
+      gameModes,
+      currentGameMode,
+      currentNameGameMode,
+      gameStatusMessage,
+      gameVisualLayer,
+    } = this.state;
+
+    const handleChangeMode = (event) => {
+      const gameMode = gameModes[event.target.value];
+
+      this.buildGame(gameMode);
+
+      this.setState({
+        currentNameGameMode: event.target.value,
+        currentGameMode: gameMode,
+      });
+    };
+
+    const handleClickPlay = () => {
+      if (isPlay) {
+        return;
+      }
+
+      this.setInterval = setInterval(() => this.startGame(currentGameMode), currentGameMode.delay);
+      this.setState({ isPlay: true });
+    };
+
     return (
       <div>
+        <Menu
+          isPlay={isPlay}
+          relaunch={relaunch}
+          gameModes={gameModes}
+          currentGameMode={currentGameMode}
+          currentNameGameMode={currentNameGameMode}
+          handleChangeMode={handleChangeMode}
+          handleClickPlay={handleClickPlay}
+        />
         <div>
           {gameStatusMessage}
         </div>
         <div>
           {gameVisualLayer}
         </div>
+        <div>test</div>
       </div>
     );
   }
