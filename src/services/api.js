@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dateFns from 'date-fns';
 import { BASE_API_URL } from './constants';
 
 export const getWinners = () => {
@@ -27,7 +27,7 @@ export const sendWinner = (name) => {
     },
     body: JSON.stringify({
       winner: name,
-      date: moment().format('HH:MM; DD MMM YYYY'),
+      date: dateFns.format(new Date(), 'HH:MM; DD MMM YYYY'),
     }),
   };
 
