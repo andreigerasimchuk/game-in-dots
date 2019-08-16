@@ -138,16 +138,16 @@ class Game extends Component {
         }, []);
 
         const fieldSize = mode.field * mode.field;
-        const generateIndex = getRandomSquareIndex(
+        const generatedIndex = getRandomSquareIndex(
           1,
           fieldSize,
           selectedSquareIds,
         );
 
-        if (generateIndex) {
-          gameData[generateIndex].color = SQUARE_STATUSES.waiting;
+        if (generatedIndex) {
+          gameData[generatedIndex].color = SQUARE_STATUSES.waiting;
           this.setState({
-            currentSquareId: generateIndex,
+            currentSquareId: generatedIndex,
             gameData,
           });
         }
