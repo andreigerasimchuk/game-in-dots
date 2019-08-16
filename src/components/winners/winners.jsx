@@ -4,7 +4,8 @@ import './index.scss';
 const Winners = ({ winners }) => {
   const winnersList = winners.map((item, index) => (
     <li className="winners-list-item" key={index}>
-      <div>{item.winner}</div><div>{item.date}</div>
+      <div>{item.winner}</div>
+      <div>{item.date}</div>
     </li>));
 
   return (

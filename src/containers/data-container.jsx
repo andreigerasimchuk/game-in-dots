@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Winners from '../components/winners';
+import Winners from '../components/winners/winners';
 import Game from '../components/game/game';
 import { getWinners, getGameModes, sendWinner } from '../services/api';
 import '../index.scss';

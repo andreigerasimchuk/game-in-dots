@@ -2,31 +2,66 @@
     border: 1px solid #ebebee;
     min-width: 40px;
     min-height: 40px;
+    &-line {
+        display: flex;
+    }
+    &-color-white {
+        background-color: white;
+    }
+    &-color-blue {
+        background-color: #42d8e8;
+    }
+    &-color-green {
+        background-color: #00e871;
+    }
+    &-color-red {
+        background-color: #e85a5f;
+    }
 }
 
-.square-color-white {
-    background-color: white;
-}
-
-.square-color-blue {
-    background-color: #42d8e8;
-}
-
-.square-color-green {
-    background-color: #00e871;
-}
-
-.square-color-red {
-    background-color: #e85a5f;
-}
-
-.square-line {
-    display: flex;
-}
-
-.game-message {
-    display: flex;
-    justify-content: center;
-    min-height: 30px;
-    font-size: 20px;
+.game {
+    &-message {
+        display: flex;
+        justify-content: center;
+        min-height: 30px;
+        font-size: 20px;
+    }
+    &-field {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      &-title {
+          &-box {
+            padding: 5%;
+            height: 65px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+          }
+          &-input {
+            height: 45px;
+            font-size: 15px;
+            min-width: 20%;
+            margin: 0 20px 0 20px;
+            padding-left: 20px;
+          }
+          &-select {
+            height: 45px;
+            padding: 10px;
+            font-size: 15px;
+            min-width: 20%;
+            text-transform: uppercase;
+          }
+          &-button {
+            height: 45px;
+            padding: 10px;
+            font-size: 15px;
+            min-width: 20%;
+            text-transform: uppercase;
+          }
+      }
 }

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import toCase from 'to-case';
+import './index.scss';
 
 const GameMenu = ({
   currentNameGameMode,
