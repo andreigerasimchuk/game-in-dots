@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-
+import toCase from 'to-case';
 
 const GameMenu = ({
   currentNameGameMode,
@@ -17,7 +17,7 @@ const GameMenu = ({
         value={key}
         key={key}
       >
-        {key}
+        {toCase.lower(key)}
       </option>
     ));
 
