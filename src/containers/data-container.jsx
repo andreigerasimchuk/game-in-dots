@@ -42,13 +42,13 @@ export default class DataContainer extends Component {
 
     return (
       <div className="container">
-        <div className="game-box">
+        <div className="container-game">
           <Game
             gameModes={gameModes}
             userWin={userWin}
           />
         </div>
-        <div className="winners-box">
+        <div className="container-winners">
           <Winners winners={winners} />
         </div>
       </div>
