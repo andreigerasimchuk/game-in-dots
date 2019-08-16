@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "dev:watch": "npm run build -- --watch",
-    "start": "webpack-dev-server --open"
+    "dev:server": "webpack-dev-server --open"
   },
   "author": "Andrei Gerasimchuk",
   "license": "ISC",
