@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Menu from './menu';
 import { buildGameDataLayer, getRandomSquareIndex } from './helpers';
 import { SQUARE_STATUSES } from './constants';
 import './index.scss';
 
-export default class Game extends Component {
+class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -247,3 +248,15 @@ export default class Game extends Component {
     );
   }
 }
+
+Game.defaultProps = {
+  gameModes: PropTypes.shape(),
+  userWin: PropTypes.func,
+};
+
+Game.propTypes = {
+  gameModes: PropTypes.shape({}),
+  userWin: PropTypes.func,
+};
+
+export default Game;

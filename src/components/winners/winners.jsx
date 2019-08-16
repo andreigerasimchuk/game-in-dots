@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './index.scss';
 
 const Winners = ({ winners }) => {
@@ -18,6 +19,19 @@ const Winners = ({ winners }) => {
       </ul>
     </div>
   );
+};
+
+Winners.defaultProps = {
+  winners: PropTypes.arrayOf(),
+};
+
+Winners.propTypes = {
+  winners: PropTypes.arrayOf(
+    PropTypes.shape({
+      winner: PropTypes.string,
+      date: PropTypes.string,
+    }),
+  ),
 };
 
 export default Winners;

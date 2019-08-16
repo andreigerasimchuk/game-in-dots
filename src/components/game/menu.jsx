@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 import toCase from 'to-case';
 import './index.scss';
 
@@ -47,6 +47,26 @@ const GameMenu = ({
       </button>
     </div>
   );
+};
+
+GameMenu.defaultProps = {
+  currentNameGameMode: PropTypes.string,
+  gameModes: PropTypes.shape({}),
+  handleChangeMode: PropTypes.func,
+  handleClickPlay: PropTypes.func,
+  handleChangeInput: PropTypes.func,
+  relaunch: PropTypes.bool,
+  userName: PropTypes.string,
+};
+
+GameMenu.propTypes = {
+  currentNameGameMode: PropTypes.string,
+  gameModes: PropTypes.shape({}),
+  handleChangeMode: PropTypes.func,
+  handleClickPlay: PropTypes.func,
+  handleChangeInput: PropTypes.func,
+  relaunch: PropTypes.bool,
+  userName: PropTypes.string,
 };
 
 export default GameMenu;
