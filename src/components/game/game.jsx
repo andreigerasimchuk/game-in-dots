@@ -62,6 +62,7 @@ class Game extends Component {
       currentSquareId: null,
       isPlay: false,
       gameData: currentGameData,
+      gameStatusMessage: '',
     });
   }
 
