@@ -15,7 +15,6 @@
 }
 
 .game {
-  background-color: #00e871;
   height: 100vh;
   &-message {
     display: flex;
@@ -30,7 +29,6 @@
     flex-wrap: wrap;
     justify-content: center;
     align-content: center;
-    border: 5px solid red;
   }
   &-title {
     &-box {
