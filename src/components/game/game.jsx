@@ -138,7 +138,7 @@ class Game extends Component {
           return acc;
         }, []);
 
-        const fieldSize = mode.field * mode.field;
+        const fieldSize = (mode.field * mode.field) - 1;
         const generatedIndex = getRandomSquareIndex(
           1,
           fieldSize,
