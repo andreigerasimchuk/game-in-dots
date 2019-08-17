@@ -62,7 +62,6 @@ class Game extends Component {
       currentSquareId: null,
       isPlay: false,
       gameData: currentGameData,
-      gameStatusMessage: '',
     });
   }
 
@@ -130,7 +129,8 @@ class Game extends Component {
           return;
         }
 
-        const selectedSquareIds = gameData.reduce((acc, item, index) => {
+        const currentGameData = [...gameData];
+        const selectedSquareIds = currentGameData.reduce((acc, item, index) => {
           if (item.selected) {
             acc.push(index);
           }
@@ -146,10 +146,10 @@ class Game extends Component {
         );
 
         if (generatedIndex) {
-          gameData[generatedIndex].color = SQUARE_STATUSES.waiting;
+          currentGameData[generatedIndex].color = SQUARE_STATUSES.waiting;
           this.setState({
             currentSquareId: generatedIndex,
-            gameData,
+            gameData: currentGameData,
           });
         }
       });

@@ -1,65 +1,115 @@
+$mobile: 568px;
+$tablet: 768px;
+$desktop: 1024px;
+
 .row {
   border: 1px solid #ebebee;
+
   &-color-white {
     background-color: white;
   }
+
   &-color-blue {
     background-color: #42d8e8;
   }
+
   &-color-green {
     background-color: #00e871;
   }
+
   &-color-red {
     background-color: #e85a5f;
   }
 }
 
 .game {
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   &-message {
     display: flex;
     justify-content: center;
     min-height: 30px;
     font-size: 20px;
+    padding-top: 5px;
   }
+
   &-field {
-    width: 100%;
-    height: 80%;
+    width: 70vh;
+    height: 70vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-content: center;
+
+    @media (max-width: $tablet) {
+      width: 80vh;
+      height: 80vh;
+    }
+
+    @media (max-width: $mobile) {
+      width: 90vw;
+      height: 90vw;
+    }
   }
+
   &-title {
     &-box {
-      padding: 5%;
-      height: 65px;
-      width: 100%;
+      min-height: 65px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 25px;
+
+      @media (max-width: $mobile) {
+        display: flex;
+        flex-direction: column;
+        width: 90vw;
+      }
     }
+
     &-input {
-      height: 45px;
+      min-height: 43px;
       font-size: 15px;
-      min-width: 20%;
-      margin: 0 20px 0 20px;
+      margin: 0 10px 0 10px;
       padding-left: 20px;
+      background-color: #f3f3f3;
+      color: #8e9ea3;
+      font-weight: 700;
+
+      @media (max-width: $mobile) {
+        width: 100%;
+        margin: 10px 0 10px 0;
+      }
     }
+
     &-select {
-      height: 45px;
-      padding: 10px;
+      min-height: 45px;
+      padding: 5px;
       font-size: 15px;
-      min-width: 20%;
+      font-weight: 700;
+      background-color: #7b8d93;
+      color: #fafafb;
       text-transform: uppercase;
+
+      @media (max-width: $mobile) {
+        width: 100%;
+      }
     }
+
     &-button {
-      height: 45px;
-      padding: 10px;
-      font-size: 15px;
+      min-height: 45px;
       min-width: 20%;
+      background-color: #7b8d93;
+      color: #fafafb;
+      font-weight: 700;
       text-transform: uppercase;
+      border-radius: 4px;
+
+      @media (max-width: $mobile) {
+        width: 100%;
+      }
     }
   }
 }
